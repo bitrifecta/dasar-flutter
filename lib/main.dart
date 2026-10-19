@@ -1,113 +1,96 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pml/basic_widgets/image_wifget.dart';
-import 'package:pml/basic_widgets/text_input.dart';
-import 'package:pml/basic_widgets/text_widget.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() => runApp(const DashboardApp());
+
+class DashboardApp extends StatefulWidget {
+  const DashboardApp({super.key});
+  @override
+  State<DashboardApp> createState() => _DashboardAppState();
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class _DashboardAppState extends State<DashboardApp> {
+  bool isDark = false;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorSchemeSeed: Colors.indigo,
+      ),
+      themeMode: ThemeMode.system,
+      home: DashboardPage(
+        isDark: isDark,
+        onDarkChanged: (value) => setState(() => isDark = value),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  DateTime? _dateTime = DateTime.now();
-
-  // void _incrementCounter() {
-  //   setState(() {
-  //     _counter = _counter + 1;
-  //   });
-  // }
-  //
-
-  void tampilkanDialog(BuildContext context) {
-    Widget okButton = TextButton(
-      child: Text("OK"),
-      onPressed: () => Navigator.pop(context),
-    );
-
-    AlertDialog dialog = AlertDialog(
-      title: Text("Judul Dialog"),
-      content: Text("Ini isi dialog rendi"),
-      actions: [okButton],
-    );
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return dialog;
-      },
-    );
-  }
-
+class DashboardPage extends StatelessWidget {
+  const DashboardPage({
+    required this.isDark,
+    required this.onDarkChanged,
+    super.key,
+  });
+  final bool isDark;
+  final ValueChanged<bool> onDarkChanged;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: const Text('Student Dashboard'),
+        actions: [
+          Row(
+            children: [
+              Icon(isDark ? Icons.dark_mode : Icons.light_mode),
+              const SizedBox(width: 4),
+              CupertinoSwitch(value: isDark, onChanged: onDarkChanged),
+              const SizedBox(width: 12),
+            ],
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: .center,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final columns = constraints.maxWidth >= 700 ? 2 : 1;
+          return GridView.count(
+            padding: const EdgeInsets.all(16),
+            crossAxisCount: columns,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 2.6,
+            children: const [
+              DashboardCard(title: 'Assignments', value: '8'),
+              DashboardCard(title: 'Attendance', value: '92%'),
+              DashboardCard(title: 'Portfolio', value: 'Ready'),
+              DashboardCard(title: 'Current week', value: '02'),
+            ],
+          );
+        },
+      ),
+    );
+  }
+}
+
+class DashboardCard extends StatelessWidget {
+  const DashboardCard({required this.title, required this.value, super.key});
+  final String title;
+  final String value;
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
           children: [
-            Text(_dateTime?.toIso8601String() ?? "Test"),
-
-            MyImageWidget(),
-            const MyTextWidget(),
-
-            InputTextWidget(),
-
-            ElevatedButton(
-              child: Text("ubah tanggal"),
-              onPressed: () async {
-                final DateTime? tanggal = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2015, 8),
-                  lastDate: DateTime(2101),
-                );
-
-                if (tanggal != null && tanggal != _dateTime) {
-                  setState(() {
-                    _dateTime = tanggal;
-                  });
-                }
-              },
-            ),
-
-            // const Text('You have pushed the button this many times:'),
-            // Text(
-            //   '$_counter',
-            //   style: Theme.of(context).textTheme.headlineMedium,
-            // ),
+            Expanded(child: Text(title)),
+            Text(value, style: Theme.of(context).textTheme.headlineSmall),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => tampilkanDialog(context),
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

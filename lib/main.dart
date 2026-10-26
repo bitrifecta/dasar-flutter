@@ -1,24 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:pml/models/plan.dart';
-import 'package:pml/provider/plan_provider.dart';
-import 'package:pml/views/plan_creator_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'pages/todo_page.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(const ProviderScope(child: MyApp()));
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return PlanProvider(
-      notifier: ValueNotifier<List<Plan>>(const []),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-        home: const PlanCreatorScreen(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+    title: 'Week 3 - ToDo',
+    theme: ThemeData(colorSchemeSeed: Colors.teal, useMaterial3: true),
+    home: const TodoPage(),
+  );
 }

@@ -10,4 +10,10 @@ class Plan {
 
   String get completenessMessage =>
       '$completedCount out of ${tasks.length} tasks';
+
+  @override
+  String toString() {
+    // TODO: implement toString
+    return '${this.name}: ${tasks.toString()}';
+  }
 }

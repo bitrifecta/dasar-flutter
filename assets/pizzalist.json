@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "pizzaName": "Margherita",
+    "description": "Pizza with tomato...",
+    "price": 8.75,
+    "imageUrl": "images/margherita.png"
+  },
+  {
+    "id": 2,
+    "pizzaName": "Pizza 1",
+    "description": "Pizza with tomato...",
+    "price": 8.75,
+    "imageUrl": "images/margherita.png"
+  },
+  {
+    "id": 3,
+    "pizzaName": "Pizza 2",
+    "description": "Pizza with tomato...",
+    "price": 8.75,
+    "imageUrl": "images/margherita.png"
+  },
+  {
+    "id": 4,
+    "pizzaName": "Pizza 3",
+    "description": "Pizza with tomato...",
+    "price": 8.75,
+    "imageUrl": "images/margherita.png"
+  },
+  {
+    "id": 5,
+    "pizzaName": "Pizza 4",
+    "description": "Pizza with tomato...",
+    "price": 8.75,
+    "imageUrl": "images/margherita.png"
+  },
+  {
+    "id": 6,
+    "pizzaName": "Pizza 5",
+    "description": "Pizza with tomato...",
+    "price": 8.75,
+    "imageUrl": "images/margherita.png"
+  },
+  {
+    "id": 7,
+    "pizzaName": "Pizza 6",
+    "description": "Pizza with tomato...",
+    "price": 8.75,
+    "imageUrl": "images/margherita.png"
+  },
+  {
+    "id": 8,
+    "pizzaName": "Pizza 7",
+    "description": "Pizza with tomato...",
+    "price": 8.75,
+    "imageUrl": "images/margherita.png"
+  },
+  {
+    "id": 9,
+    "pizzaName": "Pizza 8",
+    "description": "Pizza with tomato...",
+    "price": 8.75,
+    "imageUrl": "images/margherita.png"
+  },
+  {
+    "id": 10,
+    "pizzaName": "Pizza 9",
+    "description": "Pizza with tomato...",
+    "price": 8.75,
+    "imageUrl": "images/margherita.png"
+  }
+]

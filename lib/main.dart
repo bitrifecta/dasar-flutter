@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() {
@@ -30,52 +31,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String documentsPath = '';
-  String tempPath = '';
+  final storage = const FlutterSecureStorage();
+  final myKey = 'myPass';
 
-  late File myFile;
-  String fileText = '';
+  final TextEditingController pwdController = TextEditingController();
 
-  Future<bool> writeFile() async {
-    try {
-      await myFile.writeAsString('Margherita, Capricciosa, Napoli');
-      return true;
-    } catch (e) {
-      return false;
-    }
+  Future writeToSecureStorage() async {
+    await storage.write(key: myKey, value: pwdController.text);
   }
 
-  Future<bool> readFile() async {
-    try {
-      String fileContent = await myFile.readAsString();
-      setState(() {
-        fileText = fileContent;
-      });
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future getPath() async {
-    final docDir = await getApplicationDocumentsDirectory();
-    final tempDir = await getTemporaryDirectory();
-
-    setState(() {
-      documentsPath = docDir.path;
-      tempPath = tempDir.path;
-    });
+  Future<String> readFromSecureStorage() async {
+    String secret = await storage.read(key: myKey) ?? '';
+    return secret;
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getPath().then((_) async {
-      myFile = File('$documentsPath/pizzas.txt');
-      await writeFile();
-      readFile();
-    });
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    pwdController.dispose();
   }
 
   @override
@@ -89,8 +63,30 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Center(
           child: Column(
             children: [
-              Text("PATH : $documentsPath"),
-              Text('Isi text : $fileText'),
+              TextField(controller: pwdController, obscureText: true),
+              ElevatedButton(
+                child: Text("Simpan password"),
+                onPressed: () {
+                  if (pwdController.text != "") {
+                    writeToSecureStorage();
+                  }
+                },
+              ),
+              ElevatedButton(
+                child: Text("Tampilkan Password"),
+                onPressed: () async {
+                  var password = await readFromSecureStorage();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Password kamu adalah'),
+                        content: Text(password),
+                      );
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),
